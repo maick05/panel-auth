@@ -1,6 +1,9 @@
+import { LocalStorageHelper } from './../helper/local-storage.helper';
 import { MessageResponse } from '../model/message-response.model';
 import { HttpService } from './http.service';
-export class LoginService {
+import { AbstractAuthService } from './abstract.service';
+
+export class LoginService extends AbstractAuthService {
 	async login(username: string, password: string): Promise<MessageResponse> {
 		const dataArr = [
 			'AUTH/API/GET_PROJECT',
@@ -8,25 +11,20 @@ export class LoginService {
 			'AUTH/API/GET_SCOPE'
 		];
 
-		const response = await HttpService.makePost(
-			'http://auth.devseeder.com/auth/login',
-			dataArr,
-			{
-				Authorization: HttpService.GetTokenBasicAuth(username, password),
-				projectkey: 'AUTH'
-			}
-		);
+		const response = await this.httpService.makePost('/auth/login', dataArr, {
+			Authorization: HttpService.GetTokenBasicAuth(username, password),
+			projectkey: 'AUTH'
+		});
 
-		console.log(response);
 		console.log(response.status);
 		console.log(response.data);
 
 		switch (response.status) {
 			case 200:
 			case 201:
-			case 202:
-			case 203:
-			case 204:
+				LocalStorageHelper.setValue('apiToken', response.data.token);
+				console.log(response.data.token);
+				console.log(LocalStorageHelper.getValue('apiToken'));
 				return new MessageResponse(true, '');
 			case 401:
 			case 403:

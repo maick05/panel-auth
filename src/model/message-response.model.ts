@@ -1,3 +1,3 @@
 export class MessageResponse {
-	constructor(public success: boolean, public message: string) {}
+	constructor(public success: boolean, public message: any) {}
 }
