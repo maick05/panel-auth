@@ -3,4 +3,6 @@ export class User {
 	name: string = '';
 	username: string = '';
 	projectKey: string = '';
+	active: boolean = true;
+	scopes: string[] = [];
 }

@@ -11,6 +11,8 @@ export class HttpService {
 		data: any,
 		headers = {}
 	): Promise<CustomResponse | any> {
+		console.log(`making post...`);
+		console.log(data);
 		try {
 			const response = await axios.post(
 				`${this.url}${endpoint}`,
@@ -22,9 +24,10 @@ export class HttpService {
 					}
 				}
 			);
-
+			console.log(response);
 			return response;
 		} catch (err) {
+			console.log(err);
 			if (err instanceof AxiosError) return err.response;
 
 			return err;

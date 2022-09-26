@@ -2,15 +2,15 @@ import { MessageResponse } from '../../model/message-response.model';
 import { AbstractAuthService } from '../abstract.service';
 import { HttpService } from '../http.service';
 
-const ctrl = 'users';
+const ctrl = 'scopes';
 
-export class GetUserService extends AbstractAuthService {
-	async searchUsers(
-		name = '',
+export class GetScopesService extends AbstractAuthService {
+	async searchScopes(
+		id = '',
 		projectKey = '',
-		onlyActive = true
+		resourceKey = ''
 	): Promise<MessageResponse> {
-		const params = `?name=${name}&projectKey=${projectKey}&active=${onlyActive}`;
+		const params = `?id=${id}&resourceKey=${resourceKey}&projectKey=${projectKey}`;
 		const response = await this.httpService.makeGet(
 			`/${ctrl}/search${params}`,
 			{
@@ -21,7 +21,7 @@ export class GetUserService extends AbstractAuthService {
 		return this.validateGetResponse(response);
 	}
 
-	async getUserById(id: string): Promise<MessageResponse> {
+	async getScopeById(id: string): Promise<MessageResponse> {
 		const response = await this.httpService.makeGet(`/${ctrl}/details/${id}`, {
 			Authorization: HttpService.GetBearerTokenAuth('apiToken')
 		});

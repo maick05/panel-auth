@@ -2,28 +2,33 @@
 import style from "./UsersPanel.module.scss";
 import { useEffect, useState } from "react";
 import { RecoilRoot, useRecoilValue } from "recoil";
-import { Button, Container, Dimmer, Header, Icon, Input, Segment, Select, Table } from "semantic-ui-react";
-import { User } from "../../model/user.model";
-import { GetUserService } from "../../services/users/get-user.service";
-import { Loading } from "../../components/Loading";
-import { useSetLoading } from "../../states/hooks/useSetLoading";
-import { isLoading } from "../../states/atoms/atom";
-import { projectKeys } from "../../consts/projects.const";
+import { Button, Checkbox, Container, Dimmer, Form, Header, Icon, Input, Segment, Select, Table } from "semantic-ui-react";
+import { User } from "../../../model/user.model";
+import { GetUserService } from "../../../services/users/get-user.service";
+import { Loading } from "../../../components/Loading";
+import { useSetLoading } from "../../../states/hooks/useSetLoading";
+import { isLoading } from "../../../states/atoms/atom";
+import { projectKeys } from "../../../consts/projects.const";
+import { useNavigate } from "react-router-dom";
 
 
 
 export function UsersPanel() {
+    const navigate = useNavigate();
     const [users, setUsers] = useState<User[]>();
     const [nameSearch, setName] = useState("");
     const [projectKey, setProjKey] = useState("");
+    const [active, setActive] = useState(true);
+    const [labelActive, setLabelActive] = useState("Active");
+
     const useIsLoading = useRecoilValue(isLoading);
     const setLoading = useSetLoading();
 
     useEffect(() => {
-        const getUsers = async (name = '', projKey = '') => {
+        const getUsers = async (name = '', projKey = '', onlyActive = true) => {
             setLoading(true);
             const userService = new GetUserService();
-            const usersRes = await userService.searchUsers(name, projKey);
+            const usersRes = await userService.searchUsers(name, projKey, onlyActive);
             console.log(usersRes);
             if (usersRes.success) {
                 setUsers(usersRes.message);
@@ -31,8 +36,12 @@ export function UsersPanel() {
             setLoading(false);
         }
 
-        getUsers(nameSearch, projectKey).catch(console.error);
-    }, [nameSearch, projectKey]);
+        getUsers(nameSearch, projectKey, active).catch(console.error);
+    }, [nameSearch, projectKey, active]);
+
+    useEffect(() => {
+        setLabelActive(active ? "Active" : "Inactive")
+    }, [active]);
 
     return (
         <RecoilRoot>
@@ -52,6 +61,14 @@ export function UsersPanel() {
                         placeholder='Select the Project Key'
                         options={projectKeys}
                         onChange={(e, { name, value }) => setProjKey(value ? value?.toString() : "")}
+                    />
+
+                    <Checkbox
+                        toggle
+                        checked={active}
+                        label={labelActive}
+                        className={style.activeCB}
+                        onChange={(e) => setActive(!active)}
                     />
 
                     <Table celled>
@@ -75,7 +92,12 @@ export function UsersPanel() {
                                             <Table.Cell>{item.username}</Table.Cell>
                                             <Table.Cell>{item.projectKey}</Table.Cell>
                                             <Table.Cell>
-                                                <Button color='orange' icon labelPosition='right'>
+                                                <Button
+                                                    color='orange'
+                                                    icon
+                                                    labelPosition='right'
+                                                    onClick={() => navigate(`/users/details/${item._id}`)}
+                                                >
                                                     Edit
                                                     <Icon name='edit' />
                                                 </Button>
@@ -105,7 +127,7 @@ export function UsersPanel() {
                 </Table.Footer> */}
                     </Table>
                 </Dimmer.Dimmable>
-            </Container>
+            </Container >
         </RecoilRoot >
     );
 }
