@@ -12,7 +12,8 @@ export class LoginService extends AbstractAuthService {
 			'AUTH/API/GET_SCOPE',
 			'AUTH/API/GRANT_SCOPE',
 			'AUTH/API/INACTIVATE_USER',
-			'AUTH/API/ACTIVATE_USER'
+			'AUTH/API/ACTIVATE_USER',
+			'AUTH/API/UPDATE_USER'
 		];
 
 		const response = await this.httpService.makePost('/auth/login', dataArr, {

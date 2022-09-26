@@ -14,6 +14,9 @@ import { GrantScopeService } from "../../../services/scopes/grant-scope.service"
 import { useSetIsUserActive } from "../../../states/hooks/useSetIsUserActive";
 import { useSetUser } from "../../../states/hooks/useSetUser";
 import { Scope } from "../../../model/scope.model";
+import { toast } from 'react-toastify';
+import { Toast } from "../../../components/Toast";
+import { UpdateUserService } from "../../../services/users/update-user.service";
 
 export function EditUser() {
     const params = useParams();
@@ -25,7 +28,6 @@ export function EditUser() {
     // Scopes
     const [projectKey, setProjKey] = useState("");
     const [scopeOptions, setScopeOptions] = useState([]);
-    const [scopesDB, setScopesDB] = useState<Scope[]>([]);
     const [scope, setScope] = useState<string>("");
     const [loadScope, setloadScope] = useState(false);
     const [loadGrantScope, setloadGrantScope] = useState(false);
@@ -40,8 +42,32 @@ export function EditUser() {
         setloadGrantScope(true);
         const grantScopeService = new GrantScopeService();
         const usersRes = await grantScopeService.grantScope(user.username, user.projectKey, [scope]);
-        // setScopes([...scopes, scope])
         setloadGrantScope(false);
+
+        if (!usersRes.success) {
+            toast(usersRes.message)
+            return;
+        }
+
+        toast("Scope granted!");
+
+        setUser({ ...user, scopes: [...user.scopes, scope] })
+    }
+
+    const updateUser = async () => {
+        setLoading(true);
+        const updateService = new UpdateUserService();
+        const usersRes = await updateService.updateUser(user._id, user.name);
+        setLoading(false);
+
+        if (!usersRes.success) {
+            toast(usersRes.message)
+            return;
+        }
+
+        toast("User updated!");
+
+        setUser({ ...user, name: user.name })
     }
 
     useEffect(() => {
@@ -51,7 +77,7 @@ export function EditUser() {
             const userService = new GetUserService();
             const usersRes = await userService.getUserById(id);
             if (usersRes.success) {
-                setUser(usersRes.message);
+                setUser({ ...usersRes.message, _id: id });
             }
             setLoading(false);
         }
@@ -65,17 +91,18 @@ export function EditUser() {
             setloadScope(true);
             const scopesService = new GetScopesService();
             const scopesRes = await scopesService.searchScopes('', projectKey);
-            const scopes = scopesRes.message.map((item: any) => {
-                return {
-                    key: item.scopeID,
-                    text: item.scopeID,
-                    value: item.scopeID
-                }
-            });
+            const scopes = scopesRes.message
+                .filter((item: Scope) => user.scopes.indexOf(item.scopeID) === -1)
+                .map((item: Scope) => {
+                    return {
+                        key: item.scopeID,
+                        text: item.scopeID,
+                        value: item.scopeID
+                    }
+                });
 
             if (scopesRes.success) {
                 setScopeOptions(scopes);
-                setScopesDB(scopesRes.message);
             }
             setloadScope(false);
         }
@@ -90,6 +117,7 @@ export function EditUser() {
     return (
         <RecoilRoot>
             <Container>
+                <Toast />
                 <br />
                 <Dimmer.Dimmable as={Segment} dimmed={true}>
                     <div className={style.container}>
@@ -148,6 +176,7 @@ export function EditUser() {
                                                 color='blue'
                                                 type='button'
                                                 loading={loadGrantScope}
+                                                disabled={!user.active}
                                                 onClick={() => grantScope()}
                                             >Grant Scope</Button>
                                         </Grid.Column>
@@ -159,7 +188,12 @@ export function EditUser() {
                                     })}
                                 </List>
 
-                                <Button color='blue' type='button'>Save</Button>
+                                <Button
+                                    color='blue'
+                                    type='button'
+                                    disabled={!user.active}
+                                    onClick={() => updateUser()}
+                                >Save</Button>
                             </Form>
                         </>}
                     </div>

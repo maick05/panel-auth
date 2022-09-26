@@ -5,7 +5,8 @@ import { MessageResponse } from '../model/message-response.model';
 export abstract class AbstractAuthService {
 	protected httpService: HttpService;
 	constructor() {
-		this.httpService = new HttpService('http://auth.devseeder.com');
+		// this.httpService = new HttpService('http://auth.devseeder.com');
+		this.httpService = new HttpService('http://localhost:5000');
 	}
 
 	validateGetResponse(response: AxiosResponse) {

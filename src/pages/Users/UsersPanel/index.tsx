@@ -2,7 +2,7 @@
 import style from "./UsersPanel.module.scss";
 import { useEffect, useState } from "react";
 import { RecoilRoot, useRecoilValue } from "recoil";
-import { Button, Checkbox, Container, Dimmer, Form, Header, Icon, Input, Segment, Select, Table } from "semantic-ui-react";
+import { Button, Checkbox, Container, Dimmer, Header, Icon, Input, Segment, Select, Table } from "semantic-ui-react";
 import { User } from "../../../model/user.model";
 import { GetUserService } from "../../../services/users/get-user.service";
 import { Loading } from "../../../components/Loading";
@@ -19,7 +19,6 @@ export function UsersPanel() {
     const [nameSearch, setName] = useState("");
     const [projectKey, setProjKey] = useState("");
     const [active, setActive] = useState(true);
-    const [labelActive, setLabelActive] = useState("Active");
 
     const useIsLoading = useRecoilValue(isLoading);
     const setLoading = useSetLoading();
@@ -38,10 +37,6 @@ export function UsersPanel() {
 
         getUsers(nameSearch, projectKey, active).catch(console.error);
     }, [nameSearch, projectKey, active]);
-
-    useEffect(() => {
-        setLabelActive(active ? "Active" : "Inactive")
-    }, [active]);
 
     return (
         <RecoilRoot>
@@ -66,7 +61,7 @@ export function UsersPanel() {
                     <Checkbox
                         toggle
                         checked={active}
-                        label={labelActive}
+                        label="Only Active"
                         className={style.activeCB}
                         onChange={(e) => setActive(!active)}
                     />

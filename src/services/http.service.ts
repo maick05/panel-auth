@@ -34,6 +34,34 @@ export class HttpService {
 		}
 	}
 
+	async makePut(
+		endpoint: string,
+		data: any,
+		headers = {}
+	): Promise<CustomResponse | any> {
+		console.log(`making put...`);
+		console.log(data);
+		try {
+			const response = await axios.put(
+				`${this.url}${endpoint}`,
+				JSON.stringify(data),
+				{
+					headers: {
+						'Content-Type': 'application/json',
+						...headers
+					}
+				}
+			);
+			console.log(response);
+			return response;
+		} catch (err) {
+			console.log(err);
+			if (err instanceof AxiosError) return err.response;
+
+			return err;
+		}
+	}
+
 	async makeGet(endpoint: string, headers = {}): Promise<CustomResponse | any> {
 		try {
 			const response = await axios.get(`${this.url}${endpoint}`, {
