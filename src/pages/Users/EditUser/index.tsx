@@ -116,89 +116,86 @@ export function EditUser() {
 
     return (
         <RecoilRoot>
-            <Container>
-                <Toast />
-                <br />
-                <Dimmer.Dimmable as={Segment} dimmed={true}>
-                    <div className={style.container}>
-                        <Header size='huge'>Edit User</Header>
-                        {useIsLoading ? <Loading /> : <>
-                            <Form>
-                                <Form.Field className={style.formEdit}>
-                                    <label>Name</label>
-                                    <input
-                                        value={user.name}
-                                        placeholder='First Name'
-                                        onChange={(e) => setUser({ ...user, name: e.target.value })}
-                                    />
-                                </Form.Field >
-                                <Form.Field className={style.formEdit}>
-                                    <label>Email</label>
-                                    <input readOnly disabled value={user.username} placeholder='Email/Username' />
-                                </Form.Field>
-                                <Form.Field className={style.formEdit}>
-                                    <label>Project Key</label>
-                                    <input readOnly disabled value={user.projectKey} placeholder='Email/Username' />
-                                </Form.Field>
-                                <Form.Field>
-                                    <Checkbox
-                                        toggle
-                                        checked={user.active}
-                                        label={labelActive}
-                                        onChange={(e) => setIsUserActive(!user.active)}
-                                    />
-                                </Form.Field>
-                                <label className={style.scopeLabel}>Scopes</label>
-                                <Grid columns={3}>
-                                    <Grid.Row className={style.rowPK}>
-                                        <Grid.Column width={4}>
-                                            <Select
-                                                placeholder='Project Key'
-                                                options={projectKeys.slice(1, projectKeys.length)}
-                                                value={projectKey}
-                                                onChange={(e, { name, value }) => setProjKey(value ? value?.toString() : "")}
-                                            />
-                                        </Grid.Column>
-                                        <Grid.Column width={6}>
-                                            <Select
-                                                className={style.scopeField}
-                                                placeholder='Scope'
-                                                loading={loadScope}
-                                                options={scopeOptions}
-                                                value={scope}
-                                                onChange={(e, { name, value }) => {
-                                                    setScope(value?.toString() || "");
-                                                }}
-                                            />
-                                        </Grid.Column>
-                                        <Grid.Column width={3}>
-                                            <Button
-                                                color='blue'
-                                                type='button'
-                                                loading={loadGrantScope}
-                                                disabled={!user.active}
-                                                onClick={() => grantScope()}
-                                            >Grant Scope</Button>
-                                        </Grid.Column>
-                                    </Grid.Row>
-                                </Grid>
-                                <List celled>
-                                    {user.scopes.map((item) => {
-                                        return (<List.Item key={item}>{item}</List.Item>)
-                                    })}
-                                </List>
+            <Toast />
+            <Dimmer.Dimmable as={Segment} dimmed={true}>
+                <div className={style.container}>
+                    <Header size='huge'>Edit User</Header>
+                    {useIsLoading ? <Loading /> : <>
+                        <Form>
+                            <Form.Field className={style.formEdit}>
+                                <label>Name</label>
+                                <input
+                                    value={user.name}
+                                    placeholder='First Name'
+                                    onChange={(e) => setUser({ ...user, name: e.target.value })}
+                                />
+                            </Form.Field >
+                            <Form.Field className={style.formEdit}>
+                                <label>Email</label>
+                                <input readOnly disabled value={user.username} placeholder='Email/Username' />
+                            </Form.Field>
+                            <Form.Field className={style.formEdit}>
+                                <label>Project Key</label>
+                                <input readOnly disabled value={user.projectKey} placeholder='Email/Username' />
+                            </Form.Field>
+                            <Form.Field>
+                                <Checkbox
+                                    toggle
+                                    checked={user.active}
+                                    label={labelActive}
+                                    onChange={(e) => setIsUserActive(!user.active)}
+                                />
+                            </Form.Field>
+                            <label className={style.scopeLabel}>Scopes</label>
+                            <Grid columns={3}>
+                                <Grid.Row className={style.rowPK}>
+                                    <Grid.Column width={4}>
+                                        <Select
+                                            placeholder='Project Key'
+                                            options={projectKeys.slice(1, projectKeys.length)}
+                                            value={projectKey}
+                                            onChange={(e, { name, value }) => setProjKey(value ? value?.toString() : "")}
+                                        />
+                                    </Grid.Column>
+                                    <Grid.Column width={6}>
+                                        <Select
+                                            className={style.scopeField}
+                                            placeholder='Scope'
+                                            loading={loadScope}
+                                            options={scopeOptions}
+                                            value={scope}
+                                            onChange={(e, { name, value }) => {
+                                                setScope(value?.toString() || "");
+                                            }}
+                                        />
+                                    </Grid.Column>
+                                    <Grid.Column width={3}>
+                                        <Button
+                                            color='blue'
+                                            type='button'
+                                            loading={loadGrantScope}
+                                            disabled={!user.active}
+                                            onClick={() => grantScope()}
+                                        >Grant Scope</Button>
+                                    </Grid.Column>
+                                </Grid.Row>
+                            </Grid>
+                            <List celled>
+                                {user.scopes.map((item) => {
+                                    return (<List.Item key={item}>{item}</List.Item>)
+                                })}
+                            </List>
 
-                                <Button
-                                    color='blue'
-                                    type='button'
-                                    disabled={!user.active}
-                                    onClick={() => updateUser()}
-                                >Save</Button>
-                            </Form>
-                        </>}
-                    </div>
-                </Dimmer.Dimmable>
-            </Container>
+                            <Button
+                                color='blue'
+                                type='button'
+                                disabled={!user.active}
+                                onClick={() => updateUser()}
+                            >Save</Button>
+                        </Form>
+                    </>}
+                </div>
+            </Dimmer.Dimmable>
         </RecoilRoot >
     );
 }

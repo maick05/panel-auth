@@ -5,10 +5,13 @@ import { HttpService } from '../http.service';
 const ctrl = 'projects';
 
 export class GetProjectService extends AbstractAuthService {
-	async searchProjects(): Promise<MessageResponse> {
-		const response = await this.httpService.makeGet(`/${ctrl}/search`, {
-			Authorization: HttpService.GetBearerTokenAuth('apiToken')
-		});
+	async searchProjects(id: string): Promise<MessageResponse> {
+		const response = await this.httpService.makeGet(
+			`/${ctrl}/search?key=${id}`,
+			{
+				Authorization: HttpService.GetBearerTokenAuth('apiToken')
+			}
+		);
 
 		return this.validateGetResponse(response);
 	}

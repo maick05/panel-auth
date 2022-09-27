@@ -40,69 +40,67 @@ export function UsersPanel() {
 
     return (
         <RecoilRoot>
-            <Container>
-                <br />
-                <Dimmer.Dimmable as={Segment} dimmed={true}>
-                    <Header size='huge'>Users</Header>
-                    <Input
-                        // loading={useIsLoading}
-                        icon='search'
-                        iconPosition='left'
-                        placeholder='Name/Username...'
-                        onChange={(e) => setName(e.target.value)}
-                        className={style.inputSearch}
-                    />
-                    <Select
-                        placeholder='Select the Project Key'
-                        options={projectKeys}
-                        onChange={(e, { name, value }) => setProjKey(value ? value?.toString() : "")}
-                    />
+            <Dimmer.Dimmable as={Segment} dimmed={true}>
+                <Header size='huge'>Users</Header>
+                <Input
+                    // loading={useIsLoading}
+                    icon='search'
+                    iconPosition='left'
+                    placeholder='Name/Username...'
+                    onChange={(e) => setName(e.target.value)}
+                    className={style.inputSearch}
+                />
+                <Select
+                    placeholder='Select the Project Key'
+                    options={projectKeys}
+                    onChange={(e, { name, value }) => setProjKey(value ? value?.toString() : "")}
+                />
 
-                    <Checkbox
-                        toggle
-                        checked={active}
-                        label="Only Active"
-                        className={style.activeCB}
-                        onChange={(e) => setActive(!active)}
-                    />
+                <Checkbox
+                    toggle
+                    checked={active}
+                    label="Only Active"
+                    className={style.activeCB}
+                    onChange={(e) => setActive(!active)}
+                />
 
-                    <Table celled>
-                        <Table.Header>
-                            <Table.Row>
-                                <Table.HeaderCell>Id</Table.HeaderCell>
-                                <Table.HeaderCell>Name</Table.HeaderCell>
-                                <Table.HeaderCell>Username/Email</Table.HeaderCell>
-                                <Table.HeaderCell>Project Key</Table.HeaderCell>
-                                <Table.HeaderCell></Table.HeaderCell>
-                            </Table.Row>
-                        </Table.Header>
+                <Table celled>
+                    <Table.Header>
+                        <Table.Row>
+                            <Table.HeaderCell>Id</Table.HeaderCell>
+                            <Table.HeaderCell>Name</Table.HeaderCell>
+                            <Table.HeaderCell>Username/Email</Table.HeaderCell>
+                            <Table.HeaderCell>Project Key</Table.HeaderCell>
+                            <Table.HeaderCell></Table.HeaderCell>
+                        </Table.Row>
+                    </Table.Header>
 
-                        <Table.Body>
-                            {useIsLoading ? <Loading /> :
-                                users?.map((item) => {
-                                    return (
-                                        <Table.Row key={item._id}>
-                                            <Table.Cell>{item._id}</Table.Cell>
-                                            <Table.Cell>{item.name}</Table.Cell>
-                                            <Table.Cell>{item.username}</Table.Cell>
-                                            <Table.Cell>{item.projectKey}</Table.Cell>
-                                            <Table.Cell>
-                                                <Button
-                                                    color='orange'
-                                                    icon
-                                                    labelPosition='right'
-                                                    onClick={() => navigate(`/users/details/${item._id}`)}
-                                                >
-                                                    Edit
-                                                    <Icon name='edit' />
-                                                </Button>
-                                            </Table.Cell>
-                                        </Table.Row>
-                                    );
-                                })}
-                        </Table.Body>
+                    <Table.Body>
+                        {useIsLoading ? <Loading /> :
+                            users?.map((item) => {
+                                return (
+                                    <Table.Row key={item._id}>
+                                        <Table.Cell>{item._id}</Table.Cell>
+                                        <Table.Cell>{item.name}</Table.Cell>
+                                        <Table.Cell>{item.username}</Table.Cell>
+                                        <Table.Cell>{item.projectKey}</Table.Cell>
+                                        <Table.Cell>
+                                            <Button
+                                                color='orange'
+                                                icon
+                                                labelPosition='right'
+                                                onClick={() => navigate(`/users/details/${item._id}`)}
+                                            >
+                                                Edit
+                                                <Icon name='edit' />
+                                            </Button>
+                                        </Table.Cell>
+                                    </Table.Row>
+                                );
+                            })}
+                    </Table.Body>
 
-                        {/* <Table.Footer>
+                    {/* <Table.Footer>
                     <Table.Row>
                         <Table.HeaderCell colSpan='3'>
                             <Menu floated='right' pagination>
@@ -120,9 +118,8 @@ export function UsersPanel() {
                         </Table.HeaderCell>
                     </Table.Row>
                 </Table.Footer> */}
-                    </Table>
-                </Dimmer.Dimmable>
-            </Container >
+                </Table>
+            </Dimmer.Dimmable>
         </RecoilRoot >
     );
 }

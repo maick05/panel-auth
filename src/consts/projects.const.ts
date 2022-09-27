@@ -5,6 +5,10 @@ export const projectKeys = [
 	{ key: 'PLACES', value: 'PLACES', text: 'PLACES' }
 ];
 
-export const resourceKeys = ['API', 'WEB', 'APP'];
+export const resourceKeys = [
+	{ key: 'API', value: 'API', text: 'API' },
+	{ key: 'WEB', value: 'WEB', text: 'WEB' },
+	{ key: 'APP', value: 'APP', text: 'APP' }
+];
 
 export const AUTH_PROJECT = 'AUTH';
