@@ -2,7 +2,6 @@ import { useRecoilValue } from 'recoil';
 import { actualUser } from '../atoms/atom';
 import { useSetRecoilState } from 'recoil';
 import { User } from '../../model/user.model';
-import { constants } from 'buffer';
 import { useSetLoading } from './useSetLoading';
 import { UpdateUserService } from '../../services/users/update-user.service';
 import { toast } from 'react-toastify';

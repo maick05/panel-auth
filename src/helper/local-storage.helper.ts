@@ -16,4 +16,9 @@ export class LocalStorageHelper {
 	static clear() {
 		localStorage.clear();
 	}
+
+	static IsCached(): boolean {
+		const token = LocalStorageHelper.getValue('apiToken');
+		return token !== null;
+	}
 }

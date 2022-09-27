@@ -2,7 +2,7 @@
 import style from "./EditUser.module.scss";
 import { useEffect, useState } from "react";
 import { RecoilRoot, useRecoilValue } from "recoil";
-import { Button, Checkbox, Container, Dimmer, Form, Grid, Header, List, Segment, Select } from "semantic-ui-react";
+import { Button, Checkbox, Dimmer, Form, Grid, Header, List, Segment, Select } from "semantic-ui-react";
 import { GetUserService } from "../../../services/users/get-user.service";
 import { Loading } from "../../../components/Loading";
 import { useSetLoading } from "../../../states/hooks/useSetLoading";

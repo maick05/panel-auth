@@ -2,7 +2,7 @@
 import style from "./UsersPanel.module.scss";
 import { useEffect, useState } from "react";
 import { RecoilRoot, useRecoilValue } from "recoil";
-import { Button, Checkbox, Container, Dimmer, Header, Icon, Input, Segment, Select, Table } from "semantic-ui-react";
+import { Button, Checkbox, Dimmer, Header, Icon, Input, Segment, Select, Table } from "semantic-ui-react";
 import { User } from "../../../model/user.model";
 import { GetUserService } from "../../../services/users/get-user.service";
 import { Loading } from "../../../components/Loading";
